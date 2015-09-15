@@ -3,11 +3,12 @@ module.exports = function(keycloak) {
   return function(request, response, next) {
     keycloak.getGrant( request, response )
       .then( function(grant) {
-        response.locals.grant = grant;
+        request.auth.grant = grant;
       })
-      .then( function() {
+      .then( next )
+      .catch( function() {
+          console.log("Exception during grant-attacher::getGrant");
         next();
-      } )
-      .catch( next );
+      } );
   };
 };

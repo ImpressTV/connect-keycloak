@@ -7,11 +7,8 @@ module.exports = function(keycloak) {
     }
 
     if ( request.query.error ) {
-      response.status( 403 );
-      response.end( "Access denied" );
-      return;
+      return keycloak.accessDenied(request,response,next);
     }
-
     keycloak.getGrantFromCode( request.query.code, request, response )
       .then( function(grant) {
         var urlParts = {
@@ -25,8 +22,16 @@ module.exports = function(keycloak) {
 
         var cleanUrl = URL.format( urlParts );
 
+        request.auth.grant = grant;
+        try {
+          keycloak.authenticated( request );
+        } catch (err) {
+          console.log( "could not authenticate request: " + err );
+        }
+        console.log("redirect to:" + cleanUrl);
         response.redirect( cleanUrl );
-      });
-
+    }).catch(function (e) {
+        console.log("error happend in getGrantFromCode(): " + e);
+    });
   };
 };

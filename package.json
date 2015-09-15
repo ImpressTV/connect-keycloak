@@ -1,6 +1,6 @@
 {
   "name": "connect-keycloak",
-  "version": "0.0.14",
+  "version": "0.0.17",
   "description": "Keycloak Connect Middleware",
   "main": "index.js",
   "scripts": {
@@ -20,12 +20,26 @@
     "jasmine": "^2.1.1"
   },
   "dependencies": {
-    "keycloak-auth-utils": "0.0.14",
+    "keycloak-auth-utils": "0.0.16",
     "q": "^1.1.2"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/bobmcwhirter/connect-keycloak.git"
+    "url": "https://github.com/ImpressTV/connect-keycloak.git"
   },
-  "bugs": "http://github.com/bobmcwhirter/connect-keycloak/issues"
+  "bugs": {
+    "url": "http://github.com/keycloak/keycloak-nodejs/issues"
+  },
+  "homepage": "https://github.com/keycloak/keycloak-nodejs",
+  "maintainers": [
+    {
+      "name": "martonw",
+      "email": "info@impresstv.com"
+    }
+  ],
+  "dist": {
+    "shasum": "11ea8d44199407f3153f8f4216e4e76c93eeef01",
+    "tarball": "http://registry.npmjs.org/connect-keycloak/-/connect-keycloak-0.0.17.tgz"
+  },
+  "directories": {},
 }

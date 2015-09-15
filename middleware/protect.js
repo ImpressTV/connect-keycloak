@@ -5,7 +5,12 @@ function forceLogin(keycloak, request, response) {
   var port = request.app.settings.port || 3000;
 
   var redirectUrl = 'http://' + host + ( port == 80 ? '' : ':' + port ) + request.url + '?auth_callback=1';
-  request.session.auth_redirect_uri = redirectUrl;
+
+  if(request.session){
+      request.session.auth_redirect_uri = redirectUrl;
+  }else{
+      response.cookie("auth_redirect_uri", redirectUrl);
+  }
 
   var uuid = UUID();
   var loginURL = keycloak.loginUrl( uuid, redirectUrl );
@@ -34,14 +39,13 @@ module.exports = function(keycloak, spec) {
   }
 
   return function(request, response, next) {
-    if ( response.locals.grant ) {
-      if ( ! guard || guard( response.locals.grant.access_token, request, response ) ) {
+
+    if ( request.auth && request.auth.grant ) {
+      if ( ! guard || guard( request.auth.grant.access_token, request, response ) ) {
         return next();
       }
 
-      response.status( 403 );
-      response.end( "Access denied" );
-      return;
+      return keycloak.accessDenied(request,response,next);
     }
 
     forceLogin(keycloak, request, response);
